@@ -1,8 +1,9 @@
 
 # Week 4 Cleaning and Getting Data Assignment
+# Install dplyr using install.packages ("dplyr") if necessary
 
 library(dplyr)
-# Download the file and unzip files into working directory (already set)
+# Download the file and unzip files into SourceData directory (already set)
 
 # create folder if does not exist
 if(!file.exists("./SourceData")){dir.create("./SourceData")}
@@ -12,7 +13,7 @@ FileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%2
 download.file(FileUrl, destfile = "./SourceData/SmartPhoneData.zip")
 unzip("./SourceData/SmartPhoneData.zip", exdir = "./SourceData")
 
-# Read in the features and activity labels information into seperate vectors to be used later in the script
+# Read in the features and activity labels information into separate vectors to be used later in the script
 features <- read.table("./SourceData/UCI HAR Dataset/features.txt")
 activity <- read.table("./SourceData/UCI HAR Dataset/activity_labels.txt")
 colnames(activity) <- c("ActivityID", "Activity")
