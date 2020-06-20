@@ -13,6 +13,10 @@ FileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%2
 download.file(FileUrl, destfile = "./SourceData/SmartPhoneData.zip")
 unzip("./SourceData/SmartPhoneData.zip", exdir = "./SourceData")
 
+#******************************************************************
+#Step 1.Merges the training and the test sets to create one data set.
+#******************************************************************
+
 # Read in the features and activity labels information into separate vectors to be used later in the script
 features <- read.table("./SourceData/UCI HAR Dataset/features.txt")
 activity <- read.table("./SourceData/UCI HAR Dataset/activity_labels.txt")
@@ -35,6 +39,11 @@ MergeData <- rbind(x_train, x_test)
 MergeActivity <- rbind(y_train, y_test)
 MergeSubjects <- rbind(subject_train, subject_test)
 
+
+#******************************************************************
+#Step 2.-Extracts only the measurements on the mean and standard deviation for each measurement.
+#******************************************************************
+
 # Add in appropriate descriptive labels to the column variables in the merged dataset using the created 'features' vector.  Add in descriptive column labels to the activity and subject tables.
 colnames(MergeData) <- features[,2]
 colnames(MergeActivity) <- "ActivityID"
@@ -47,13 +56,27 @@ Merged_set_wlabels <- cbind(MergeSubjects, MergeActivity, MergeData)
 SelectedColumns <- grepl("*mean\\(\\)|*std\\(\\)|ActivityID|SubjectID", names(Merged_set_wlabels))
 SelectedData <- Merged_set_wlabels[ , SelectedColumns]
 
+#******************************************************************
+#Step 3. Uses descriptive activity names to name the activities in the data set
+#******************************************************************
+
 # Replace the activity IDs with the descriptive names for the activity.
 LabelledData <- merge(SelectedData, activity, by="ActivityID") 
 LabelledData <- LabelledData[, c(2,ncol(LabelledData), 3:(ncol(LabelledData)-1))]
 
+
+#******************************************************************
+#Step 4. Appropriately labels the data set with descriptive variable names.
+#******************************************************************
+
+#******************************************************************
+#Step 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+#******************************************************************
+
 # Create a tidy data set where the average for each of the variables has been calculated for each activity and subject combination and shown on a single row.
 TidyData <- aggregate(.~SubjectID+Activity, LabelledData, mean)
-TidyData <- arrange(TidyData, SubjectID)
+#TidyData <- arrange(TidyData, SubjectID)
+TidyData <- TidyData[order(TidyData$SubjectID, TidyData$Activity),]
 
 # Copy tidy data set to a text file as required by the assignment
 write.table(TidyData, "TidyData.txt", row.names = FALSE, quote = FALSE)
