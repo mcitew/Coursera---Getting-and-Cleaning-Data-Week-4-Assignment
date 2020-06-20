@@ -18,22 +18,22 @@ features <- read.table("./SourceData/UCI HAR Dataset/features.txt")
 activity <- read.table("./SourceData/UCI HAR Dataset/activity_labels.txt")
 colnames(activity) <- c("ActivityID", "Activity")
 
-#  Read in the training set data and associated reference files
-Training_set <- read.table("./SourceData/UCI HAR Dataset/train/X_train.txt")
-Training_ActivityLabels<- read.table("./SourceData/UCI HAR Dataset/train/y_train.txt")
-Training_subjects <- read.table ("./SourceData/UCI HAR Dataset/train/subject_train.txt")
+#  Read in the training table
+x_train <- read.table("./SourceData/UCI HAR Dataset/train/X_train.txt")
+y_train <- read.table("./SourceData/UCI HAR Dataset/train/y_train.txt")
+subject_train <- read.table ("./SourceData/UCI HAR Dataset/train/subject_train.txt")
 
 #  Read in the test set data and associated reference files
-Test_set <- read.table("./SourceData/UCI HAR Dataset/test/X_test.txt")
-Test_Activitylabels <- read.table("./SourceData/UCI HAR Dataset/test/y_test.txt")
-Test_subjects <- read.table ("./SourceData/UCI HAR Dataset/test/subject_test.txt")
+x_test <- read.table("./SourceData/UCI HAR Dataset/test/X_test.txt")
+y_test <- read.table("./SourceData/UCI HAR Dataset/test/y_test.txt")
+subject_test <- read.table ("./SourceData/UCI HAR Dataset/test/subject_test.txt")
 
 # Merge the training and test data sets into one dataset.
-MergeData <- rbind(Training_set, Test_set)
+MergeData <- rbind(x_train, x_test)
 
 # Merge the activity and subject reference tables for the training and test sets into single reference tables.
-MergeActivity <- rbind(Training_ActivityLabels, Test_Activitylabels)
-MergeSubjects <- rbind(Training_subjects, Test_subjects)
+MergeActivity <- rbind(y_train, y_test)
+MergeSubjects <- rbind(subject_train, subject_test)
 
 # Add in appropriate descriptive labels to the column variables in the merged dataset using the created 'features' vector.  Add in descriptive column labels to the activity and subject tables.
 colnames(MergeData) <- features[,2]
