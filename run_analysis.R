@@ -47,7 +47,7 @@ Merged_set_wlabels <- cbind(MergeSubjects, MergeActivity, MergeData)
 SelectedColumns <- grepl("*mean\\(\\)|*std\\(\\)|ActivityID|SubjectID", names(Merged_set_wlabels))
 SelectedData <- Merged_set_wlabels[ , SelectedColumns]
 
-# Replace the actvity IDs with the descriptive names for the activity.
+# Replace the activity IDs with the descriptive names for the activity.
 LabelledData <- merge(SelectedData, activity, by="ActivityID") 
 LabelledData <- LabelledData[, c(2,ncol(LabelledData), 3:(ncol(LabelledData)-1))]
 
@@ -55,5 +55,5 @@ LabelledData <- LabelledData[, c(2,ncol(LabelledData), 3:(ncol(LabelledData)-1))
 TidyData <- aggregate(.~SubjectID+Activity, LabelledData, mean)
 TidyData <- arrange(TidyData, SubjectID)
 
-# Copy tidy data set to a text file for uploading into GitHub
+# Copy tidy data set to a text file as required by the assignment
 write.table(TidyData, "TidyData.txt", row.names = FALSE, quote = FALSE)
